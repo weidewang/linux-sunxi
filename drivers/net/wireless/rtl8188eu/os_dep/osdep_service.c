@@ -1253,7 +1253,7 @@ void rtw_yield_os()
 
 #define RTW_SUSPEND_LOCK_NAME "rtw_wifi"
 
-#ifdef CONFIG_WAKELOCK
+#ifdef CONFIG_WAKELOCK_DISABLED_HACK
 static struct wake_lock rtw_suspend_lock;
 #elif defined(CONFIG_ANDROID_POWER)
 static android_suspend_lock_t rtw_suspend_lock ={
@@ -1263,11 +1263,11 @@ static android_suspend_lock_t rtw_suspend_lock ={
 
 inline void rtw_suspend_lock_init()
 {
-	#if  defined(CONFIG_WAKELOCK) || defined(CONFIG_ANDROID_POWER)
+	#if  defined(CONFIG_WAKELOCK_DISABLED_HACK) || defined(CONFIG_ANDROID_POWER)
 	DBG_871X("##########%s ###########\n", __FUNCTION__);
 	#endif
 
-	#ifdef CONFIG_WAKELOCK
+	#ifdef CONFIG_WAKELOCK_DISABLED_HACK
 	wake_lock_init(&rtw_suspend_lock, WAKE_LOCK_SUSPEND, RTW_SUSPEND_LOCK_NAME);
 	#elif defined(CONFIG_ANDROID_POWER)
 	android_init_suspend_lock(&rtw_suspend_lock);
@@ -1278,7 +1278,7 @@ inline void rtw_suspend_lock_init()
 inline void rtw_suspend_lock_uninit()
 {
 
-	#if  defined(CONFIG_WAKELOCK) || defined(CONFIG_ANDROID_POWER)
+	#if  defined(CONFIG_WAKELOCK_DISABLED_HACK) || defined(CONFIG_ANDROID_POWER)
 	DBG_871X("##########%s###########\n", __FUNCTION__);
 	if(rtw_suspend_lock.link.next == LIST_POISON1 || rtw_suspend_lock.link.prev == LIST_POISON2) {
 		DBG_871X("##########%s########### list poison!!\n", __FUNCTION__);
@@ -1286,7 +1286,7 @@ inline void rtw_suspend_lock_uninit()
 	}
 	#endif
 	
-	#ifdef CONFIG_WAKELOCK
+	#ifdef CONFIG_WAKELOCK_DISABLED_HACK
 	wake_lock_destroy(&rtw_suspend_lock);
 	#elif defined(CONFIG_ANDROID_POWER)
 	android_uninit_suspend_lock(&rtw_suspend_lock);
@@ -1297,7 +1297,7 @@ inline void rtw_suspend_lock_uninit()
 inline void rtw_lock_suspend()
 {
 
-	#if  defined(CONFIG_WAKELOCK) || defined(CONFIG_ANDROID_POWER)
+	#if  defined(CONFIG_WAKELOCK_DISABLED_HACK) || defined(CONFIG_ANDROID_POWER)
 	//DBG_871X("##########%s###########\n", __FUNCTION__);
 	if(rtw_suspend_lock.link.next == LIST_POISON1 || rtw_suspend_lock.link.prev == LIST_POISON2) {
 		DBG_871X("##########%s########### list poison!!\n", __FUNCTION__);
@@ -1305,7 +1305,7 @@ inline void rtw_lock_suspend()
 	}
 	#endif
 	
-	#ifdef CONFIG_WAKELOCK
+	#ifdef CONFIG_WAKELOCK_DISABLED_HACK
 	wake_lock(&rtw_suspend_lock);
 	#elif defined(CONFIG_ANDROID_POWER)
 	android_lock_suspend(&rtw_suspend_lock);
@@ -1314,7 +1314,7 @@ inline void rtw_lock_suspend()
 
 inline void rtw_unlock_suspend()
 {
-	#if  defined(CONFIG_WAKELOCK) || defined(CONFIG_ANDROID_POWER)
+	#if  defined(CONFIG_WAKELOCK_DISABLED_HACK) || defined(CONFIG_ANDROID_POWER)
 	//DBG_871X("##########%s###########\n", __FUNCTION__);
 	if(rtw_suspend_lock.link.next == LIST_POISON1 || rtw_suspend_lock.link.prev == LIST_POISON2) {
 		DBG_871X("##########%s########### list poison!!\n", __FUNCTION__);
@@ -1322,7 +1322,7 @@ inline void rtw_unlock_suspend()
 	}
 	#endif
 	
-	#ifdef CONFIG_WAKELOCK
+	#ifdef CONFIG_WAKELOCK_DISABLED_HACK
 	wake_unlock(&rtw_suspend_lock);
 	#elif defined(CONFIG_ANDROID_POWER)
 	android_unlock_suspend(&rtw_suspend_lock);
